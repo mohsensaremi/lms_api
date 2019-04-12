@@ -105,7 +105,7 @@ return array(
         "fname" => "نام",
         "lname" => "نام خانوادگی",
         "password" => "رمز عبور",
-        "password_confirmation" => "تاییدیه ی رمز عبور",
+        "passwordConfirmation" => "تاییدیه ی رمز عبور",
         "city" => "شهر",
         "country" => "کشور",
         "address" => "نشانی",

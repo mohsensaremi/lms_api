@@ -18,3 +18,8 @@ $router->get('/', function () use ($router) {
 $router->get('/debug', 'ExampleController@debug');
 $router->post('/login', 'AuthController@login');
 $router->post('/register', 'AuthController@register');
+
+$router->group(['middleware'=>['jwt_auth']],function ()use($router){
+
+    $router->get('/me', 'AuthController@me');
+});

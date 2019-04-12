@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\HttpResponseException;
 use App\Models\User;
 use App\Util\HttpResponse;
-use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
-use Firebase\JWT\ExpiredException;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -18,26 +16,6 @@ class AuthController extends Controller
     public function __construct(Request $request)
     {
         $this->request = $request;
-    }
-
-
-    protected function jwt(User $user)
-    {
-        $now = time();
-        $token = $user->tokens()->create([
-            'iat' => $now,
-        ]);
-        $payload = [
-            'id' => $token->id,
-            'iss' => url(), // Issuer of the token
-            'sub' => $user->id, // Subject of the token
-            'iat' => $now, // Time when JWT was issued.
-            'exp' => $now + 60 * 60 // Expiration time
-        ];
-
-        // As you can see we are passing `JWT_SECRET` as the second parameter that will
-        // be used to decode the token in the future.
-        return JWT::encode($payload, env('JWT_SECRET'));
     }
 
     /**
@@ -62,13 +40,13 @@ class AuthController extends Controller
 
         if (Hash::check($this->request->input('password'), $user->password)) {
             return new HttpResponse([
-                'accessToken' => $this->jwt($user)
+                'accessToken' => $user->generateToken()
             ]);
         }
 
         throw new HttpResponseException([
             'نام کاربری یا کلمه عبور اشتباه است'
-        ], 402);
+        ], 422);
     }
 
     /**
@@ -84,28 +62,44 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
             'passwordConfirmation' => 'required',
+            'firstName' => 'required',
+            'lastName' => 'required',
         ]);
 
         if ($this->request->input('password') !== $this->request->input('passwordConfirmation')) {
             throw new HttpResponseException([
                 'تایید کلمه عبور اشتباه است'
-            ], 402);
+            ], 422);
         }
 
         $user = User::where('email', $this->request->input('email'))->first();
         if ($user) {
             throw new HttpResponseException([
                 'نام کاربری تکراری است'
-            ], 402);
+            ], 422);
         }
 
         $user = new User([
             'email' => $this->request->input('email'),
+            'firstName' => $this->request->input('firstName'),
+            'lastName' => $this->request->input('lastName'),
             'password' => Hash::make($this->request->input('password')),
         ]);
         $user->save();
         return new HttpResponse([
-            'accessToken' => $this->jwt($user)
+            'accessToken' => $user->generateToken()
+        ]);
+    }
+
+    public function me()
+    {
+        $user = $this->request->user();
+        if (!$user->getUserLoaded()) {
+            $user->loadUser();
+        }
+
+        return new HttpResponse([
+            'user' => $this->request->user(),
         ]);
     }
 }
