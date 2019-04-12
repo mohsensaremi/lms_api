@@ -19,6 +19,24 @@ class User extends Base
         'password',
     ];
 
+    protected $appends = [
+        'typeFa',
+    ];
+
+    public function getTypeFaAttribute()
+    {
+        switch ($this->type) {
+            case self::TYPE_STUDENT:
+                return 'دانشجو';
+            case self::TYPE_INSTRUCTOR:
+                return 'آموزگار';
+            case self::TYPE_ADMINISTRATOR:
+                return 'مدیر';
+            default:
+                return '';
+        }
+    }
+
     public function tokens()
     {
         return $this->hasMany(UserToken::class, 'sub', 'id');
@@ -29,5 +47,12 @@ class User extends Base
         $token = new UserToken();
         $token->user()->associate($this);
         return $token->generate();
+    }
+
+    public function courses()
+    {
+        if ($this->type === self::TYPE_INSTRUCTOR) {
+            return $this->hasMany(Course::class, 'userId', 'id');
+        }
     }
 }

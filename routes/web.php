@@ -19,8 +19,13 @@ $router->get('/debug', 'ExampleController@debug');
 $router->post('/login', 'AuthController@login');
 $router->post('/register', 'AuthController@register');
 
-$router->group(['middleware'=>['jwt_auth']],function ()use($router){
+$router->group(['middleware' => ['jwt_auth']], function () use ($router) {
 
     $router->get('/me', 'AuthController@me');
     $router->post('/logout', 'AuthController@logout');
+
+    $router->group(['prefix' => 'course'], function () use ($router) {
+
+        $router->get('/list', 'CourseController@list');
+    });
 });

@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 class Base extends Model
 {
     public $incrementing = false;
+
     /**
      * Boot function from laravel.
      */
@@ -25,5 +26,18 @@ class Base extends Model
         static::creating(function ($model) {
             $model->{$model->getKeyName()} = Str::uuid()->toString();
         });
+    }
+
+    public function scopePaginateList($query, $limit = null, $skip = null)
+    {
+        $limit = is_null($limit) ? 15 : $limit;
+        $skip = is_null($skip) ? 0 : $skip;
+        
+        $total = $query->count();
+        $list = $query->skip($skip)->limit($limit)->get();
+        return [
+            'total' => $total,
+            'list' => $list,
+        ];
     }
 }
