@@ -64,6 +64,7 @@ class AuthController extends Controller
             'passwordConfirmation' => 'required',
             'firstName' => 'required',
             'lastName' => 'required',
+            'type' => 'required|in:' . User::TYPE_INSTRUCTOR . ',' . User::TYPE_STUDENT,
         ]);
 
         if ($this->request->input('password') !== $this->request->input('passwordConfirmation')) {
@@ -83,6 +84,7 @@ class AuthController extends Controller
             'email' => $this->request->input('email'),
             'firstName' => $this->request->input('firstName'),
             'lastName' => $this->request->input('lastName'),
+            'type' => $this->request->input('type'),
             'password' => Hash::make($this->request->input('password')),
         ]);
         $user->save();
@@ -93,13 +95,17 @@ class AuthController extends Controller
 
     public function me()
     {
-        $user = $this->request->user();
-        if (!$user->getUserLoaded()) {
-            $user->loadUser();
-        }
+        $user = $this->request->authService->getUser();
 
         return new HttpResponse([
-            'user' => $this->request->user(),
+            'user' => $user,
         ]);
+    }
+
+    public function logout()
+    {
+        $this->request->authService->logout();
+
+        return new HttpResponse();
     }
 }

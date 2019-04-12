@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Firebase\JWT\ExpiredException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -55,6 +56,8 @@ class Handler extends ExceptionHandler
             $exception = new HttpResponseException(['Token Expired Exception'], 403);
         } else if ($exception instanceof \UnexpectedValueException) {
             $exception = new HttpResponseException(['Unexpected Value Exception'], 403);
+        } else if ($exception instanceof AuthenticationException) {
+            $exception = new HttpResponseException(['not authenticated'], 403);
         }
 
         return parent::render($request, $exception);

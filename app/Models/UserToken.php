@@ -27,6 +27,7 @@ class UserToken extends Base
             'id' => $this->id,
             'iss' => url(), // Issuer of the token
             'sub' => $this->user->id, // Subject of the token
+            'type' => $this->user->type,
             'iat' => $now, // Time when JWT was issued.
             'exp' => $now + 60 * 60 // Expiration time
         ];

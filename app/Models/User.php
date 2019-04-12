@@ -2,27 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Http\Request;
+use Firebase\JWT\JWT;
+
 class User extends Base
 {
-    protected $userLoaded = true;
+    const TYPE_STUDENT = 'student';
+    const TYPE_INSTRUCTOR = 'instructor';
+    const TYPE_ADMINISTRATOR = 'administrator';
 
     protected $fillable = [
-        'firstName', 'lastName', 'email', 'password',
+        'firstName', 'lastName', 'email', 'password', 'type',
     ];
 
     protected $hidden = [
         'password',
     ];
-
-    public function setUserLoaded($userLoaded)
-    {
-        $this->userLoaded = $userLoaded;
-    }
-
-    public function getUserLoaded()
-    {
-        return $this->userLoaded;
-    }
 
     public function tokens()
     {
@@ -34,20 +29,5 @@ class User extends Base
         $token = new UserToken();
         $token->user()->associate($this);
         return $token->generate();
-    }
-
-    public function getAttribute($key)
-    {
-        if ($this->userLoaded || $key === $this->getKeyName()) {
-            return parent::getAttribute($key);
-        }
-        $this->loadUser();
-        return $this->getAttribute($key);
-    }
-    
-    public function loadUser(){
-        $user = self::find($this->getKey());
-        $this->fill($user->getAttributes());
-        $this->userLoaded = true;
     }
 }

@@ -22,4 +22,5 @@ $router->post('/register', 'AuthController@register');
 $router->group(['middleware'=>['jwt_auth']],function ()use($router){
 
     $router->get('/me', 'AuthController@me');
+    $router->post('/logout', 'AuthController@logout');
 });

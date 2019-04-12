@@ -6,7 +6,7 @@ class HttpResponse
 {
     protected $content;
 
-    public function __construct($data)
+    public function __construct($data=[])
     {
         $this->content = [
             'data' => $data,
