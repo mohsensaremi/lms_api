@@ -57,7 +57,7 @@ class AuthController extends Controller
         if (!$user) {
             throw new HttpResponseException([
                 'نام کاربری یا کلمه عبور اشتباه است'
-            ], 402);
+            ], 422);
         }
 
         if (Hash::check($this->request->input('password'), $user->password)) {

@@ -9,7 +9,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Http\Exceptions\HttpResponseException as BaseClass;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response;
 
 class HttpResponseException extends BaseClass
 {
