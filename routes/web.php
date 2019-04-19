@@ -24,8 +24,13 @@ $router->group(['middleware' => ['jwt_auth']], function () use ($router) {
     $router->get('/me', 'AuthController@me');
     $router->post('/logout', 'AuthController@logout');
 
+    $router->group(['prefix' => 'file'], function () use ($router) {
+        $router->post('/upload-temp', 'FileController@uploadTemp');
+    });
+
     $router->group(['prefix' => 'course'], function () use ($router) {
 
         $router->get('/list', 'CourseController@list');
+        $router->post('/submit', 'CourseController@submit');
     });
 });

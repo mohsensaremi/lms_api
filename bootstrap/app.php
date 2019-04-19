@@ -61,9 +61,9 @@ $app->middleware([
     App\Http\Middleware\CorsMiddleware::class,
 ]);
 
- $app->routeMiddleware([
-     'jwt_auth' => App\Http\Middleware\JWTAuthMiddleware::class,
- ]);
+$app->routeMiddleware([
+    'jwt_auth' => App\Http\Middleware\JWTAuthMiddleware::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -86,6 +86,11 @@ $app->middleware([
 |--------------------------------------------------------------------------
 |
 */
+
+$app->singleton('filesystem', function ($app) {
+    return $app->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem');
+});
+
 app('translator')->setLocale('fa');
 
 /*
