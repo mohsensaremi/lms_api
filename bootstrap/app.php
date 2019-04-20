@@ -76,7 +76,7 @@ $app->routeMiddleware([
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+ $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
@@ -92,6 +92,7 @@ $app->singleton('filesystem', function ($app) {
 });
 
 app('translator')->setLocale('fa');
+
 
 /*
 |--------------------------------------------------------------------------
