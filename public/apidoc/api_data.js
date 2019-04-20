@@ -1,5 +1,55 @@
 define({ "api": [
   {
+    "type": "get",
+    "url": "/me",
+    "title": "me",
+    "group": "Auth",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "accessToken",
+            "description": "<p>store it for auth required requests</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "user:",
+          "content": "{ \"status\": 200, \"data\": {\"user\":{\"firstName\":\"sample\",\"lastName\":\"sample\",\"type\":\"instructor\",\"email\":\"sample@domain.com\"}} }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/Http/Controllers/AuthController.php",
+    "groupTitle": "Auth",
+    "name": "GetMe",
+    "header": {
+      "fields": {
+        "Auth": [
+          {
+            "group": "Auth",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization JSON web token.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJh...\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "post",
     "url": "/login",
     "title": "login",

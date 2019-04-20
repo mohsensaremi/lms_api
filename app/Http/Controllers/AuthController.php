@@ -108,6 +108,14 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @api {get} /me me
+     * @apiGroup Auth
+     * @apiUse AccessToken
+     * @apiSuccess {object} accessToken store it for auth required requests
+     * @apiSuccessExample {json} user:
+     * { "status": 200, "data": {"user":{"firstName":"sample","lastName":"sample","type":"instructor","email":"sample@domain.com"}} }
+     */
     public function me()
     {
         $user = $this->request->authService->getUser();
