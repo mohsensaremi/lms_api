@@ -12,7 +12,7 @@ class ExampleController extends Controller
 
     public function debug()
     {
-       dd(Course::all()->toArray());
+       dd(Course::latest()->first());
     }
 
     //

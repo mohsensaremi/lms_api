@@ -60,7 +60,10 @@ class FileUploader
         });
 
         $this->oldInput->map(function ($item) use ($items) {
-            $found = $items->where('name', $item['name']);
+            $found = $items->find(function ($itm) use ($item) {
+                return $item['name'] === $itm['name'];
+            });
+
             if ($found->count() === 0) {
                 Storage::disk('local')->delete('public/' . $item['name']);
             }

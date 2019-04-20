@@ -19,10 +19,16 @@ class AuthController extends Controller
     }
 
     /**
-     * @api {post} /login
+     * @api {post} /login login
+     * @apiGroup Auth
      * @apiParam {String} email
      * @apiParam {String} password
-     * @apiSuccess {String} accessToken
+     * @apiSuccess {String} accessToken store it for auth required requests
+     */
+
+    /**
+     * @return HttpResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function login()
     {
@@ -50,11 +56,20 @@ class AuthController extends Controller
     }
 
     /**
-     * @api {post} /register
+     * @api {post} /register register
+     * @apiGroup Auth
      * @apiParam {String} email
      * @apiParam {String} password
      * @apiParam {String} passwordConfirmation
-     * @apiSuccess {String} accessToken
+     * @apiParam {String} firstName
+     * @apiParam {String} lastName
+     * @apiParam {String=instructor,student} type user type
+     * @apiSuccess {String} accessToken store it for auth required requests
+     */
+
+    /**
+     * @return HttpResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function register()
     {
@@ -102,6 +117,15 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @api {post} /logout logout
+     * @apiGroup Auth
+     * @apiUse AccessToken
+     */
+
+    /**
+     * @return HttpResponse
+     */
     public function logout()
     {
         $this->request->authService->logout();

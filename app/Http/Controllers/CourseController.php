@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Hash;
 class CourseController extends Controller
 {
     /**
+     * @api {get} /course/list list
+     * @apiDescription return current user course list. if instructor: list of created courses. if student: list of joined courses
+     * @apiGroup Course
+     * @apiUse Paginate
+     * @apiSuccess {Object[]} data
+     * @apiSuccess {Number} status
+     * @apiSuccessExample {json} Instructor course list:
+     * { "status": 200, "data": [{"id":"123", "title":"sample", "description":"sample", "images":[{"name":"sample.jpg", "url":"http://localhost/sample.jpg"}]}] }
+     */
+    /**
      * @param Request $request
      * @return HttpResponse
      * @throws \Exception
@@ -31,6 +41,17 @@ class CourseController extends Controller
 
         return new HttpResponse($data);
     }
+
+    /**
+     * @api {post} /course/submit submit
+     * @apiDescription submit a course. if id provided in request update it, otherwise create new record with given data.
+     * @apiGroup Course
+     * @apiParam {String} title course title.
+     * @apiParam {String} [description] course description.
+     * @apiParam {Object[]} [images] list of images. each object should contain name. objects returned from `/file/upload-temp` api should send here
+     * @apiParam {String} [password] class password for join
+     * @apiUse AccessToken
+     */
 
     /**
      * @param Request $request

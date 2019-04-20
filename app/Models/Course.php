@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Util\WithImagesColumn;
+
 class Course extends Base
 {
+    use WithImagesColumn;
 
     protected $fillable = [
         'title',
@@ -18,6 +21,7 @@ class Course extends Base
 
     protected $appends = [
         'hasPassword',
+        'image',
     ];
 
     protected $casts = [
