@@ -14,8 +14,8 @@ class CreateUserTokensTable extends Migration
     public function up()
     {
         Schema::create('user_tokens', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('sub');
+            $table->uuid('id')->primary()->index();
+            $table->uuid('sub')->index();
             $table->integer('iat');
 
             $table->foreign('sub')

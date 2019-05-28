@@ -31,7 +31,7 @@ class CourseController extends Controller
         $query = null;
         if ($user->type === User::TYPE_INSTRUCTOR) {
             $query = $user->courses()->latest();
-        } else if ($user->type === User::TYPE_INSTRUCTOR) {
+        } else if ($user->type === User::TYPE_STUDENT) {
             throw new \Exception('not implemented');
         } else {
             throw new \Exception('user type invalid');
